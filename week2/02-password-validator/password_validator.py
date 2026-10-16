@@ -1,3 +1,4 @@
+import re
 import string
 
 def has_min_length(password) -> bool:
@@ -22,21 +23,31 @@ def has_special(password) -> bool:
     # Write your code here
     return True if any(char in string.punctuation for char in password) else False
 
+lowercase = r"(?=.*[a-z])"
+uppercase = r"(?=.*[A-Z])"
+digit = r"(?=.*\d)"
+special = r"(?=.*[@$!%*?&])"
+min_length = r"([A-Za-z\d@$!%*?&]{8,})"
 
 def is_valid_password(password) -> bool:
     # Write your code here
     if not password:
         return False
-    if has_uppercase(password) and has_lowercase(password) and has_min_length(password) and has_special(password) and has_digit(password):
-        return True
-    return False
+
+    pattern = fr"^{lowercase}{uppercase}{digit}{special}{min_length}"
+    # pattern = r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$"
+
+    return bool(re.match(pattern, password))
+
+#     requirements = [has_min_length, has_uppercase, has_lowercase, has_digit, has_special]
+#
+#     return all(func(password) for func in requirements)
+
 
 # bonus
 def get_failed_requirements(password):
     # Write your code here
-    requirements = [has_min_length, has_uppercase, has_lowercase, has_digit, has_special]
-    failed = []
-    for func in requirements:
-        if not func(password):
-            failed += [f'{func.__name__[4:]}']
-    return failed 
+    requirements = [min_length, uppercase, lowercase, digit, special]
+
+    return list(pattern for pattern in requirements if not bool(re.match(fr"{pattern}", password)))
+
