@@ -1,7 +1,6 @@
 def three_sum(numbers):
     # Write your code here
     numbers = sorted(numbers)
-
 #     x, results = 0, []
 #
 #     while x < len(numbers):
@@ -16,19 +15,20 @@ def three_sum(numbers):
 #         x += 1
 #
 #     return result
+
     result = []
     for z in range(len(numbers)-2):
         if z > 0 and numbers[z] == numbers[z - 1]:
             continue
         x, y = z + 1, len(numbers) - 1
+
         while x < y:
-            triplet = numbers[z] + numbers[x] + numbers[y]
-            if triplet == 0:
+            if (triplet := numbers[z] + numbers[x] + numbers[y]) == 0:
                 result += [[numbers[z], numbers[x], numbers[y]]]
 
-                if numbers[x] == numbers[x + 1]:
+                while x < y and numbers[x] == numbers[x + 1]:
                     x += 1
-                if numbers[y] == numbers[y - 1]:
+                while x < y and numbers[y] == numbers[y - 1]:
                     y -= 1
                 x += 1
                 y -= 1
@@ -42,4 +42,4 @@ def three_sum(numbers):
 
 
 if __name__ == "__main__":
-    print(three_sum([-2, 0, 0, 0, 0, 0, 2]))
+    print(three_sum([-2, 0, 0, 0, 0, 0, 0, 0, 0, 2]))
